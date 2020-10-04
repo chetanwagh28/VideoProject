@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux'
 import { loginActions } from '../action';
 import {LocalizationContext} from './Translations';
+import styles from '../assets/style.js';
 
 const ForgotPassword = ({navigation}) => {
 
@@ -108,122 +109,96 @@ const ForgotPassword = ({navigation}) => {
     
     return (
 
-        <ScrollView>
+            
                 <View style={styles.container}>
-            <View style={styles.header}>
-                <Animatable.Image animation="fadeInUp"
-                    source={require('../assets/images/logo.png')}
-                    style={styles.logo}
-                    resizeMode="center"
-                    />
+                        <View>
+                            <Animatable.Image source={require('../assets/images/logo.png')} resizeMode="center" />
+                            <Text>{translations['Forgot_Password']}</Text>
+                        </View>
 
-                <Animatable.View animation="fadeInUp">
-                    <Text style={styles.pageTitle}>{translations['Forgot_Password']}</Text>
-                </Animatable.View> 
-            </View>
+                        {
+                        data.check_input 
+                        ?
+                            <React.Fragment>
+                            
+                                <View>
+                                    <FontAwesome 
+                                        name="user-o"
+                                        color={colors.text}
+                                        size={20}
+                                    />
+                                    <TextInput 
+                                        placeholder={translations['Email']}
+                                        placeholderTextColor="#666666"
+                                        name="email"
+                                        autoCapitalize="none"
+                                        onChangeText={(val) => textInputChange(val)}
+                                        onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+                                    />
+                                    {
+                                        data.check_textInputChange 
+                                        ? 
 
-        <Animatable.View 
-            animation="fadeInUp"
-            style={[styles.footer, {
-                backgroundColor: colors.background
-            }]}
-        >
-        {data.check_input ?
-            <React.Fragment>
+                                        <Feather 
+                                            name="check-circle"
+                                            color="green"
+                                            size={20}
+                                        />
+
+                                        : 
+                                        null
+                                    }
+                                </View>
+
+                                { 
+                                    data.isValidUser ? 
+                                        null 
+                                    : 
+                                        <Text>{translations['email_validation']}</Text>
+                                }
+                            </React.Fragment>
+                            :    
+                            <React.Fragment>
+                                <View>
+                                    <FontAwesome 
+                                        name="user-o"
+                                        color={colors.text}
+                                        size={20}
+                                    />
+                                    <TextInput 
+                                        placeholder={translations['Phone Number']}
+                                        placeholderTextColor="#666666"
+                                        name="username"
+                                        autoCapitalize="none"
+                                        onChangeText={(val) => textInputChange(val)}
+                                        onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+                                    />
+                                    {
+                                        data.check_textInputChange ? 
+                                        <Feather 
+                                            name="check-circle"
+                                            color="green"
+                                            size={20}
+                                        />
+                                    : 
+                                    null
+                                    }
+                                </View>
+
+                                { 
+                                    data.isValidUser ? null : 
+                                    <Text>{translations['email_validation']}</Text>
+                                }
+
+                            </React.Fragment>
+                        }
+
+                        <View>
+                            <Text onPress={() => {}}>{translations['Submit']}</Text>
+                            <Text onPress={() => navigation.goBack()}>{translations['Back']}</Text>
+                        </View>
+                    </View>
             
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color={colors.text}
-                    size={20}
-                />
-                <TextInput 
-                    placeholder={translations['Email']}
-                    placeholderTextColor="#666666"
-                    style={[styles.textInput, {
-                        color: colors.text
-                    }]}
-                    name="email"
-                    autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
-                    onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-                />
-                {data.check_textInputChange ? 
-                <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name="check-circle"
-                        color="green"
-                        size={20}
-                    />
-                </Animatable.View>
-                : null}
-            </View>
-            { data.isValidUser ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>{translations['email_validation']}</Text>
-            </Animatable.View>
-            }
-            </React.Fragment>
-        :    
-            <React.Fragment>
-            
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color={colors.text}
-                    size={20}
-                />
-                <TextInput 
-                    placeholder={translations['Phone Number']}
-                    placeholderTextColor="#666666"
-                    style={[styles.textInput, {
-                        color: colors.text
-                    }]}
-                    name="username"
-                    autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
-                    onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-                />
-                {data.check_textInputChange ? 
-                <Animatable.View
-                    animation="bounceIn"
-                >
-                    <Feather 
-                        name="check-circle"
-                        color="green"
-                        size={20}
-                    />
-                </Animatable.View>
-                : null}
-            </View>
-            { data.isValidUser ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>{translations['email_validation']}</Text>
-            </Animatable.View>
-            }
-            </React.Fragment>
-        }
-
-
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'  }}>
-                <TouchableOpacity onPress={() => {}} >
-                    <LinearGradient colors={['#00B2B6', '#00B2B6']} style={styles.commonAppButton} >
-                        <Text style={[styles.commonAppButtonText]}>{translations['Submit']}</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            
-
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <LinearGradient colors={['#00B2B6', '#00B2B6']} style={styles.commonAppButton}>
-                        <Text style={[styles.commonAppButtonText]}>{translations['Back']}</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </View>
-        </Animatable.View>
-      </View>
-        </ScrollView>
     );
 };
 
@@ -242,93 +217,3 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps)(ForgotPassword);
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1, 
-      backgroundColor: '#fff'
-    },
-    header: {
-        alignItems: 'center',
-        marginTop: 10,
-        padding: 5
-    },
-    appLogo:{
-        width:80,
-        height:80,
-    },
-    pageTitle:{
-        fontWeight:'bold',
-        fontSize:22,
-        color:'#00B2B6'
-    },    
-    footer: {
-        flex: 1,
-        backgroundColor: '#00B2B6',
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        paddingVertical: 30,
-        paddingHorizontal: 30
-    },
-    text_header: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20
-    },
-    text_footer: {
-        color: '#05375a',
-        fontSize: 16
-    },
-    action: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f2f2f2',
-        paddingBottom: 5
-    },
-    actionError: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#FF0000',
-        paddingBottom: 5
-    },
-    textInput: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 10,
-        color: '#05375a',
-    },
-    errorMsg: {
-        color: '#FF0000',
-        fontSize: 16,
-    },
-    button: {
-        flexDirection: "row",
-        alignItems: 'center',
-        marginTop: 15
-    },
-    commonAppButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 3,
-        flexDirection: 'row',
-        paddingVertical: 7,
-        paddingHorizontal: 21,
-        marginHorizontal:2,
-        marginVertical:2,
-    },
-    commonAppButtonText: {
-        color:'#fff',
-        fontSize: 12,
-    },
-    signUp: {
-        marginTop: 15,
-        width:'100%',
-        textAlign:"center"
-    },
-    textSign1: {
-        fontSize: 16,
-        fontWeight: 'bold',
-
-    }
-  });
