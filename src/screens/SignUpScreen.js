@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { loginActions } from '../action';
 import Geolocation from "@react-native-community/geolocation";
+import styles from '../assets/style.js';
 
 
 const SignUpScreen = ({navigation}) => {
@@ -165,288 +166,134 @@ const SignUpScreen = ({navigation}) => {
     }
 	// console.log('data', check)
 	return (
-		<ScrollView>
-		<View style={styles.container}>
-		  <View style={styles.header}>
-			<Animatable.Image animation="fadeInUp"
-			source={require('../assets/images/logo.png')}
-			style={styles.logo}
-			resizeMode="center"
-			/>
-
-			<Animatable.View animation="fadeInUp">
-			<Text style={styles.pageTitle}>{translations['Sign_Up']}</Text>
-			</Animatable.View>
-			</View>
-
-			<Animatable.View
-			animation="fadeInUp"
-			style={[styles.footer, {
-			backgroundColor: colors.background
-			}]}
-			>
-
-			<View style={styles.action}>
-			<Text style={styles.textStar}>*</Text>
-			<TextInput
-			placeholder={translations['Name']}
-			style={[styles.textInput, {
-			color: colors.text
-			}]}
-			autoCapitalize="none"
-			onChangeText={(name) => setData({...data, name})}
-
-			/>
-			{data.name ?
-			<Animatable.View
-			animation="bounceIn"
-			>
-			<Feather
-			name="check-circle"
-			color="green"
-			size={20}
-			/>
-			</Animatable.View>
-			: null}
-			</View>
-
-			<View style={styles.action}>
-			<Text style={styles.textStar}>*</Text>
-			<TextInput
-			placeholder={translations['Email']}
-			style={[styles.textInput, {
-			color: colors.text
-			}]}
-			autoCapitalize="none"
-			keyboardType="email-address"
-			onChangeText={(email) => setData({...data,email})}
-			/>
-			{data.email ?
-			<Animatable.View
-			animation="bounceIn"
-			>
-			<Feather
-			name="check-circle"
-			color="green"
-			size={20}
-			/>
-			</Animatable.View>
-			: null}
-			</View>
-
-			<View style={styles.action}>
-			<Text style={styles.textStar}>*</Text>
-			<TextInput
-			placeholder={translations['Phone Number']}
-			style={[styles.textInput, {
-			color: colors.text
-			}]}
-			autoCapitalize="none"
-			keyboardType="phone-pad"
-			onChangeText={(contact_no) => setData({...data,contact_no})}
-			/>
-			{data.contact_no ?
-			<Animatable.View
-			animation="bounceIn"
-			>
-			<Feather
-			name="check-circle"
-			color="green"
-			size={20}
-			/>
-			</Animatable.View>
-			: null}
-			</View>
-
-			<View style={styles.action}>
-			<Text style={styles.textStar}>*</Text>
-			<TextInput
-			placeholder={translations['Password']}
-			secureTextEntry={!check.secureTextEntry}
-			style={[styles.textInput, {
-			color: colors.text
-			}]}
-			autoCapitalize="none"
-			onChangeText={(val) => handlePasswordChange(val)}
-			/>
-			<TouchableOpacity
-			onPress={updateSecureTextEntry}
-			>
-			{!check.secureTextEntry ?
-			<Feather
-			name="eye-off"
-			color="grey"
-			size={20}
-			/>
-			:
-			<Feather
-			name="eye"
-			color="grey"
-			size={20}
-			/>
-			}
-			</TouchableOpacity>
-			</View>
-
-			<View style={styles.action}>
-			<Text style={styles.textStar}>*</Text>
-			<TextInput
-			placeholder={translations['Confirm Password']}
-			secureTextEntry={!check.confirm_secureTextEntry}
-			style={[styles.textInput, {
-			color: colors.text
-			}]}
-			autoCapitalize="none"
-			onChangeText={(val) => handleConfirmPasswordChange(val)}
-			/>
-			<TouchableOpacity
-			onPress={updateConfirmSecureTextEntry}
-			>
-			{!check.confirm_secureTextEntry ?
-			<Feather
-			name="eye-off"
-			color="grey"
-			size={20}
-			/>
-			:
-			<Feather
-			name="eye"
-			color="grey"
-			size={20}
-			/>
-			}
-			</TouchableOpacity>
-			</View>
-
 			
+				<View style={styles.container}>
 
-			<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-				<TouchableOpacity
-				onPress={() => {signUpHandle(data, position)}}
-				>
-					<LinearGradient
-					colors={['#00B2B6', '#00B2B6']}
-					style={styles.commonAppButton}
-					>
-					<Text style={[styles.commonAppButtonText]}>{translations['Sign_Up']}</Text>
-					</LinearGradient>
-				</TouchableOpacity>
+				<View>
+					<Animatable.Image source={require('../assets/images/logo.png')} resizeMode="center" />
+					<Text>{translations['Sign_Up']}</Text>
+				</View>
 
+				<View>
+					<Text style={styles.textStar}>*</Text>
+					<TextInput
+						placeholder={translations['Name']}
+						autoCapitalize="none"
+						onChangeText={(name) => setData({...data, name})}
+					/>
+					{
+					data.name ?
+					<Feather
+					name="check-circle"
+					color="green"
+					size={20}
+					/>
+					: 
+					null
+					}
+				</View>
 
-				<TouchableOpacity
-				onPress={() => navigation.goBack()}
-				>
-					<LinearGradient
-					colors={['#00B2B6', '#00B2B6']}
-					style={styles.commonAppButton}
-					>
-					<Text style={[styles.commonAppButtonText]}>{translations['Back']}</Text>
-					</LinearGradient>
-				</TouchableOpacity>
+				<View>
+					<Text style={styles.textStar}>*</Text>
+					<TextInput
+						placeholder={translations['Email']}
+						autoCapitalize="none"
+						keyboardType="email-address"
+						onChangeText={(email) => setData({...data,email})}
+					/>
+					{
+					data.email ?
+					<Feather
+					name="check-circle"
+					color="green"
+					size={20}
+					/>
+
+					: null
+					}
+				</View>
+
+				<View>
+					<Text style={styles.textStar}>*</Text>
+					<TextInput
+						placeholder={translations['Phone Number']}
+						autoCapitalize="none"
+						keyboardType="phone-pad"
+						onChangeText={(contact_no) => setData({...data,contact_no})}
+					/>
+					{
+						data.contact_no ?
+						<Feather
+						name="check-circle"
+						color="green"
+						size={20}
+						/>
+						
+						: 
+						null
+					}
+				</View>
+
+				<View>
+					<Text style={styles.textStar}>*</Text>
+					<TextInput
+						placeholder={translations['Password']}
+						secureTextEntry={!check.secureTextEntry}
+						autoCapitalize="none"
+						onChangeText={(val) => handlePasswordChange(val)}
+					/>
+					<TouchableOpacity onPress={updateSecureTextEntry}>
+						{
+						!check.secureTextEntry ?
+						<Feather
+						name="eye-off"
+						color="grey"
+						size={20}
+						/>
+						:
+						<Feather
+						name="eye"
+						color="grey"
+						size={20}
+						/>
+						}
+					</TouchableOpacity>
+				</View>
+
+				<View>
+					<Text style={styles.textStar}>*</Text>
+					<TextInput
+						placeholder={translations['Confirm Password']}
+						secureTextEntry={!check.confirm_secureTextEntry}
+						autoCapitalize="none"
+						onChangeText={(val) => handleConfirmPasswordChange(val)}
+					/>
+
+					<TouchableOpacity onPress={updateConfirmSecureTextEntry}>
+						{!check.confirm_secureTextEntry ?
+						<Feather
+						name="eye-off"
+						color="grey"
+						size={20}
+						/>
+						:
+						<Feather
+						name="eye"
+						color="grey"
+						size={20}
+						/>
+						}
+					</TouchableOpacity>
+				</View>
+
+				<View>
+					<Text onPress={() => {signUpHandle(data, position)}}>{translations['Sign_Up']}</Text>
+					<Text onPress={() => navigation.goBack()}>{translations['Back']}</Text>
+				</View>
 
 			</View>
-
-			</Animatable.View>
-		</View>
-		</ScrollView>
+			
 	);
 };
 
 export default SignUpScreen;
-
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: '#fff'
-},
-header: {
-alignItems: 'center',
-marginTop: 10,
-padding: 5
-},
-appLogo:{
-width:60,
-height:60,
-},
-footer: {
-flex: 8,
-backgroundColor: '#00B2B6',
-paddingHorizontal: 20,
-paddingVertical: 30
-},
-text_header: {
-color: '#fff',
-fontWeight: 'bold',
-fontSize: 20
-},
-text_footer: {
-color: '#05375a',
-fontSize: 16
-},
-pageTitle:{
-fontWeight:'bold',
-fontSize:22,
-color:'#00B2B6'
-},
-action: {
-flexDirection: 'row',
-marginTop: 10,
-borderBottomWidth: 1,
-borderBottomColor: '#f2f2f2',
-paddingBottom: 5
-},
-actionError: {
-flexDirection: 'row',
-marginTop: 10,
-borderBottomWidth: 1,
-borderBottomColor: '#FF0000',
-paddingBottom: 5
-},
-textInput: {
-flex: 1,
-marginTop: Platform.OS === 'ios' ? 0 : -12,
-paddingLeft: 10,
-color: '#05375a',
-},
-errorMsg: {
-color: '#FF0000',
-fontSize: 16,
-},
-signIn: {
-justifyContent: 'center',
-alignItems: 'center',
-borderRadius: 3,
-flexDirection: 'row',
-paddingVertical: 10,
-paddingHorizontal: 20,
-marginRight:10,
-marginTop:10
-},
-commonAppButtonText: {
-color:'#fff',
-fontSize: 12,
-},
-signUp: {
-marginTop: 15,
-width:'100%',
-textAlign:"center"
-},
-textSign1: {
-fontSize: 16,
-fontWeight: 'bold',
-},
-commonAppButton:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3,
-    flexDirection: 'row',
-    paddingVertical: 7,
-    paddingHorizontal: 21,
-    color:'#fff',
-    marginHorizontal:2,
-    marginVertical:2,   
-},
-textStar: {
-	color: 'red'
-}
-});
