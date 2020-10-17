@@ -29,14 +29,18 @@ const SignInScreen = ({navigation}) => {
     const dispatch = useDispatch();
 
     const [data, setData] = React.useState({
-        username: 'chetan123@gmail.com',
-        password: '123123',
+        phone: '',
+        otp: '',
         check_input: true,
         check_textInputChange: false,
-        secureTextEntry: true,
-        isValidUser: true,
-        isValidPassword: true,
-        submit: false
+        showOTP: false,
+        isValidphone: true,
+        isValidotp: true,
+        showProfile: false,
+        name: '',
+        email: '',
+        isValidname: true,
+        isValidemail: true,
     });
     console.disableYellowBox = true;
 
@@ -65,272 +69,238 @@ const SignInScreen = ({navigation}) => {
 
     const { signIn } = React.useContext(AuthContext);
 
-    const textInputChange = (val) => {
-        if( val.trim().length >= 4 ) {
+
+    const sendOtp = (phone) => {
+        if(phone.length < 9){
+             setData({
+                ...data,
+                isValidphone: false
+            });   
+        }else{
             setData({
                 ...data,
-                username: val,
-                check_textInputChange: true,
-                isValidUser: true
-            });
-        } else {
+                isValidphone: true,
+                showOTP: true
+            })    
+        }
+        
+    }
+
+    const verifyOtp = (otp) => {
+        if(otp === "1234"){
+            // let user = {
+            //     token: "cshjbvjsnkvsdvsh87ysv8dhveiyv8weivwiev",
+            //     name: "user"
+            // }
+            // signIn(user)     
             setData({
                 ...data,
-                username: val,
-                check_textInputChange: false,
-                isValidUser: false
-            });
+                isValidotp: true,
+                showProfile: true
+            }) 
+        }else{
+            // console.log("mobile")
+            setData({
+                ...data,
+                isValidotp: false
+            })    
         }
     }
 
-    const handlePasswordChange = (val) => {
-        if( val.trim().length >= 6 ) {
+    const submit = (name, email) => {
+        if(name !== "" && email !== ""){
+            let user = {
+                token: "cshjbvjsnkvsdvsh87ysv8dhveiyv8weivwiev",
+                name: "user"
+            }
+            signIn(user)     
+        }else if(name === ""){
             setData({
                 ...data,
-                password: val,
-                isValidPassword: true
-            });
-        } else {
+                isValidname: false
+            })    
+        }else if(email === ""){
             setData({
                 ...data,
-                password: val,
-                isValidPassword: false
-            });
+                isValidemail: false
+            })    
         }
     }
 
-    const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry
-        });
-    }
-
-    const handleValidUser = (val) => {
-        if( val.trim().length >= 4 ) {
-            setData({
-                ...data,
-                isValidUser: true
-            });
-        } else {
-            setData({
-                ...data,
-                isValidUser: false
-            });
-        }
-    }
-
-    const loginHandle = (userName, password, position) => {
-
-        let user = {
-            token: "cshjbvjsnkvsdvsh87ysv8dhveiyv8weivwiev",
-            name: "User"
-        }
-        signIn(user) 
-    }
-
-    const changeType = (type) => {
-        setData({
-                ...data,
-                check_input: !type
-            })
-    }
 
 
     const NeuMorph = ({children,size,style}) => {
         return(
-            
-                
-                    <View 
-                            style={[ styles.inner, styles.bottomShadow,styles.topShadow ,{ width:size || 150, height:size|| 50, borderRadius: size/2 || 40 /2}]}>
-                            {children}
-                    </View>
-                
-            
+            <View 
+                style={[ styles.inner, styles.bottomShadow,styles.topShadow ,{ width:size || 150, height:size|| 50, borderRadius: size/2 || 40 /2}]}>
+                    {children}
+            </View>
         )
     }
     
+    console.log(data)
     return (
         
             <View style={styles.container}>
                 <SafeAreaView style={{alignSelf:"stretch"}}>
 
                     <View style={styles.contentInRow}>
-                        <Text>{translations['Login']}</Text>
+                        <Text>{translations['Login']}/{translations['Sign_Up']}</Text>
                     </View>
 
-                    <View style={styles.contentInColumnCenter}>
-
-                            {
-                                data.check_input ?
-                                <React.Fragment>
-                                
-                                    <View>
-
-                                    <Neomorph
-                                        inner 
-                                        style={[styles.appNeoMorpInputBox,styles.contentInRow]}
-                                    >
-                                                <FontAwesome 
-                                                    name="user-o"
-                                                    color="grey"
-                                                    size={20}
-                                                />
-                                                <TextInput 
-                                                    placeholder={translations['Email']}
-                                                    placeholderTextColor="#666666"
-                                                    name="email"
-                                                    autoCapitalize="none"
-                                                    onChangeText={(val) => textInputChange(val)}
-                                                    onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-                                                />
-                                                {
-                                                data.check_textInputChange ? 
-                                                    <Feather 
-                                                        name="check-circle"
-                                                        color="green"
-                                                        size={20}
-                                                    />
-                                                
-                                                : null
-                                                }
-
-                                        </Neomorph>
-
-                                    </View>
-
-                                    { 
-                                        data.isValidUser ? null : 
-                                        <Text>{translations['email_validation']}</Text>
-                                    }
-
-                                </React.Fragment>
-
-                                :   
-
-                                <React.Fragment>
-                                
-                                    <View>
-
-
-                                            <FontAwesome 
-                                                name="user-o"
-                                                color="grey"
-                                                size={20}
-                                            />
-                                            <TextInput 
-                                                placeholder={translations['Phone_Number']}
-                                                placeholderTextColor="#666666"
-                                                name="phone"
-                                                autoCapitalize="none"
-                                                onChangeText={(val) => textInputChange(val)}
-                                                onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-                                            />
-                                            {
-                                            data.check_textInputChange ? 
-                                                <Feather 
-                                                    name="check-circle"
-                                                    color="green"
-                                                    size={20}
-                                                />
-                                            : 
-                                            null
-                                            }
-
-                                        
-                                    </View>
-
-                                    { 
-                                        data.isValidUser ? 
-                                        null 
-                                        : 
-                                        <Text>{translations['phone_validation']}</Text>
-                                    }
-                                </React.Fragment>
-                            }
-
-                            {/* Password Text box start */}
+                    {!data.showProfile ?
+                      <React.Fragment>
+                        <View style={styles.contentInColumnCenter}>
                             <View>
 
                                 <Neomorph
                                     inner 
                                     style={[styles.appNeoMorpInputBox,styles.contentInRow]}
                                 >
-                                        <Feather 
-                                            name="lock"
-                                            color="grey"
-                                            size={20}
-                                        />
-
                                         <TextInput 
-                                            placeholder={translations['Password']}
+                                            placeholder="Enter Mobile Number"
                                             placeholderTextColor="#666666"
-                                            secureTextEntry={data.secureTextEntry ? true : false}
+                                            name="phone"
                                             autoCapitalize="none"
-                                            onChangeText={(val) => handlePasswordChange(val)}
+                                            onChangeText={(phone) => setData({...data,phone})}
                                         />
 
-                                        <TouchableOpacity
-                                            onPress={updateSecureTextEntry}
+                                </Neomorph>
+
+                            </View>
+
+                            { 
+                                data.isValidphone ? 
+                                null 
+                                : 
+                                <Text>Enter Valid Mobile Number</Text>
+                            }   
+                        </View>
+                        {!data.showOTP &&
+                            <View style={styles.contentInRow}>
+                                <View>
+                                    <Neomorph
+                                        style={styles.appNeoMorpButtom}
+                                    >
+                                        <Text onPress={() => {sendOtp( data.phone )}} >Send OTP</Text>
+                                    </Neomorph>
+                                </View>
+
+                            </View>
+                        }
+              
+                        {data.showOTP &&
+                            <React.Fragment>
+                                <View style={styles.contentInColumnCenter}>
+                                {/* OTP Text box start */}
+                                    <View>
+
+                                        <Neomorph
+                                            inner 
+                                            style={[styles.appNeoMorpInputBox,styles.contentInRow]}
                                         >
-                                        {
+                                                <TextInput 
+                                                    placeholder={translations['mobile_otp']}
+                                                    placeholderTextColor="#666666"
+                                                    name="otp"
+                                                    autoCapitalize="none"
+                                                    onChangeText={(otp) => setData({...data,otp})}
+                                                />
 
-                                        data.secureTextEntry ? 
+                                        </Neomorph>
+                                                
+                                    </View>
+                                    
+                                    { 
+                                        data.isValidotp ? 
+                                        null 
+                                        : 
+                                        <Text>Enter Valid OTP</Text>
+                                    } 
+                                </View>
+                                <View style={styles.contentInRow}>
+                                    <View>
+                                        <Neomorph
+                                            style={styles.appNeoMorpButtom}
+                                        >
+                                            <Text onPress={() => {verifyOtp( data.otp )}} >Confirm</Text>
+                                        </Neomorph>
+                                    </View>
 
-                                        <Feather 
-                                            name="eye-off"
-                                            color="grey"
-                                            size={20}
+                                </View>
+                            </React.Fragment>
+                        }
+                      </React.Fragment>
+                      :
+                      <React.Fragment>
+                        <View style={styles.contentInColumnCenter}>
+                            <View>
+
+                                <Neomorph
+                                    inner 
+                                    style={[styles.appNeoMorpInputBox,styles.contentInRow]}
+                                >
+                                        <TextInput 
+                                            placeholder="Name"
+                                            placeholderTextColor="#666666"
+                                            name="name"
+                                            autoCapitalize="none"
+                                            onChangeText={(name) => setData({...data,name})}
                                         />
 
-                                        :
-
-                                        <Feather 
-                                            name="eye"
-                                            color="grey"
-                                            size={20}
-                                        />
-
-                                        }
-                                        </TouchableOpacity>
                                 </Neomorph>
                                         
                             </View>
                             
                             { 
-                                data.isValidPassword ? 
+                                data.isValidname ? 
                                 null 
                                 : 
-                                <Text>{translations['password_validation']}</Text>
-                            }
-
-                    </View>
-                    
-                    <View style={styles.contentInRow}>
-                        <Text onPress={() => navigation.navigate('ForgotPassword')}>{translations['Forgot_Password']}</Text>
-                    </View>
-                    
-                    <View>
-                        <Text onPress={() => changeType(data.check_input)} >  { !data.check_input ? translations['Email'] : translations['OTP'] } </Text>
-                    </View>
-
-                    <View style={styles.contentInRow}>
-                        <View>
-                            <Neomorph
-                                style={styles.appNeoMorpButtom}
-                            >
-                                <Text onPress={() => {loginHandle( data.username, data.password, position )}} >{ translations['Login'] }</Text>
-                            </Neomorph>
+                                <Text>Enter Name</Text>
+                            } 
                         </View>
 
-                        <View>
-                            <Neomorph
-                                style={styles.appNeoMorpButtom}
-                            >
-                                <Text onPress={() => navigation.navigate('SignUpScreen')}>{ translations['Sign_Up'] }</Text>
-                            </Neomorph>
+                        <View style={styles.contentInColumnCenter}>
+                            <View>
+
+                                <Neomorph
+                                    inner 
+                                    style={[styles.appNeoMorpInputBox,styles.contentInRow]}
+                                >
+                                        <TextInput 
+                                            placeholder="Email"
+                                            placeholderTextColor="#666666"
+                                            name="email"
+                                            autoCapitalize="none"
+                                            onChangeText={(email) => setData({...data,email})}
+                                        />
+
+                                </Neomorph>
+                                        
+                            </View>
+                            
+                            { 
+                                data.isValidemail ? 
+                                null 
+                                : 
+                                <Text>Enter Valid Email</Text>
+                            } 
                         </View>
-                    </View>
+                        <View style={styles.contentInRow}>
+                            <View>
+                                <Neomorph
+                                    style={styles.appNeoMorpButtom}
+                                >
+                                    <Text onPress={() => {submit( data.name, data.email )}} >Submit</Text>
+                                </Neomorph>
+                            </View>
+
+                        </View>
+                      </React.Fragment>
+                    }
+                    
+
+                    
 
                 </SafeAreaView>
             
